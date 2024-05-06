@@ -289,7 +289,7 @@ export default function Settings() {
             />
           </label>
 
-          <label for="patternSeed">Seed: {patternSeed()}
+          <label for="patternSeed">Random Seed: {patternSeed()}
             <input 
               type="range" 
               id="patternSeed"
