@@ -64,7 +64,7 @@ export const [ gridStrokeWidth, setGridStrokeWidth ] = createSignal(1)
 export const [ gridOpacity, setGridOpacity ] = createSignal(100)
 export const [ gridOrientation, setGridOrientation ] = createSignal("top")
 
-export const [ patternColor, setPatternColor ] = createSignal('red')
+export const [ patternColor, setPatternColor ] = createSignal('grey200')
 export const [ patternColorOpacity, setPatternColorOpacity ] = createSignal(100)
 export const [ patternSeed, setPatternSeed ] = createSignal(50)
 export const [ patternDensity, setPatternDensity ] = createSignal(50)
