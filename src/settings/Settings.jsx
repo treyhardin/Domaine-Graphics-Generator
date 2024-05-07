@@ -239,7 +239,10 @@ export default function Settings() {
           />
         </label>
 
-        <button onclick={() => randomizeSettings()} class="button-secondary">Randomize</button>
+        <div class={styles.buttons}>
+          <button onclick={() => randomizeSettings()} class="button-secondary">Randomize</button>
+          <button class={styles.downloadButton} onclick={() => downloadPNG()}>Download PNG</button>
+        </div>
 
         <div class={styles.sectionSubtitle}>
           <p>Grid</p>
@@ -392,7 +395,6 @@ export default function Settings() {
           </label>
 
 
-          <button onclick={() => downloadPNG()}>Download PNG</button>
 
       </div>
     </div>
