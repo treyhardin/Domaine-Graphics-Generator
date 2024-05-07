@@ -6,14 +6,14 @@
   font-family: 'Suisse Intl';
   font-weight: 400;
   font-style: normal;
-  src: url('./assets/SuisseIntl-Regular.otf');
+  src: url('/SuisseIntl-Regular.otf');
 }
 
 @font-face {
   font-family: 'Suisse Intl';
   font-weight: 600;
   font-style: normal;
-  src: url('./assets/SuisseIntl-Medium.otf');
+  src: url('/SuisseIntl-Medium.otf');
 }
 
 :root {

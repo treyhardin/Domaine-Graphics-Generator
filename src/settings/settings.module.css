@@ -1,6 +1,7 @@
 .settings {
   flex: 0 0 auto;
-  min-width: 30ch;
+  min-width: 300px;
+  /* min-width: 30ch; */
   /* background: var(--color-background-secondary); */
   /* border-radius: var(--radius-sm); */
   padding-inline: var(--space-sm);

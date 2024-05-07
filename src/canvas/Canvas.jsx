@@ -112,8 +112,6 @@ export default function Canvas() {
       
       sketch.background([...colors[canvasColor()].value, canvasAlpha]);
 
-      // sketch.background([0, 0, 0, 0.0]);
-
       drawRectangles()
       setCurrentCanvas(canvas)
 
@@ -121,10 +119,6 @@ export default function Canvas() {
         sketch.saveCanvas('DomaineGraphic.png')
         setSavePending(false)
       }
-      // if (showGrid()) drawGrid()
-      // sketch.fill(255);
-
-      // sketch.rect(width() / 2, height() / 2,50,50);
     };
 
 
@@ -153,9 +147,14 @@ export default function Canvas() {
     updateSize(width(), height())
   })
 
-  onMount(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+
     updateSize(width(), height())
   })
+
+  // onMount(() => {
+  //   updateSize(width(), height())
+  // })
 
   // updateSize(width(), height())
   
