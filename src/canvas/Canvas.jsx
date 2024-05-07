@@ -1,22 +1,16 @@
 import p5 from "p5";
 import { createEffect, createSignal, onMount } from "solid-js";
 import styles from './canvas.module.css'
-import { canvasColor, colors, columnCount, gridColor, gridOpacity, gridOrientation, gridStrokeWidth, gridStyle, gridStyles, patternColor, patternColorOpacity, patternDensity, patternSeed, rowCount, showGrid } from "../settings/Settings";
+import { canvasColor, colors, columnCount, gridColor, gridOpacity, gridOrientation, gridStrokeWidth, gridStyle, gridStyles, height, patternColor, patternColorOpacity, patternDensity, patternSeed, rowCount, showGrid, transparentCanvas, width } from "../settings/Settings";
 
-
-
-export const [ width, setWidth ] = createSignal(1024)
-export const [ height, setHeight ] = createSignal(760)
-
-export const [ backgroundColor, setBackgroundColor ] = createSignal()
+export const [ currentCanvas, setCurrentCanvas ] = createSignal(null)
+export const [ savePending, setSavePending ] = createSignal(false)
 
 export default function Canvas() {
 
   let canvasWrapper
   let canvas
   let sketch
-
-  
 
   const s = ( sketch ) => {
 
@@ -109,13 +103,31 @@ export default function Canvas() {
     };
   
     sketch.draw = () => {
-      sketch.background(colors[canvasColor()].value);
+
+      sketch.clear()
+      let canvasAlpha = 255
+      if (transparentCanvas()) {
+        canvasAlpha = 0
+      }
+      
+      sketch.background([...colors[canvasColor()].value, canvasAlpha]);
+
+      // sketch.background([0, 0, 0, 0.0]);
+
       drawRectangles()
+      setCurrentCanvas(canvas)
+
+      if (savePending()) {
+        sketch.saveCanvas('DomaineGraphic.png')
+        setSavePending(false)
+      }
       // if (showGrid()) drawGrid()
       // sketch.fill(255);
 
       // sketch.rect(width() / 2, height() / 2,50,50);
     };
+
+
   };
 
   sketch = new p5(s, canvas)
@@ -127,7 +139,6 @@ export default function Canvas() {
     const heightRatio = height / canvasWrapper.offsetHeight
 
     if (widthRatio > 1 || heightRatio > 1) {
-      console.log('width')
       if (widthRatio > heightRatio) {
         canvas.style.scale = 1 / widthRatio
       } else {

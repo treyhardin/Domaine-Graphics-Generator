@@ -1,6 +1,6 @@
 import { Show, createSignal } from 'solid-js'
-import { height, setHeight, setWidth, width } from '../canvas/Canvas'
 import styles from './settings.module.css'
+import { setSavePending } from '../canvas/Canvas'
 
 export const colors = {
   black: {
@@ -53,7 +53,11 @@ export const colors = {
   },
 }
 
+export const [ width, setWidth ] = createSignal(1024)
+export const [ height, setHeight ] = createSignal(760)
 export const [ canvasColor, setCanvasColor ] = createSignal('white')
+export const [ transparentCanvas, setTransparentCanvas ] = createSignal(false)
+
 export const [ gridColor, setGridColor ] = createSignal('blue')
 export const [ columnCount, setColumnCount ] = createSignal(9)
 export const [ rowCount, setRowCount ] = createSignal(9)
@@ -102,13 +106,84 @@ export const gridOrientationEnum = {
 //   extreme3: [2.75, 1.5, 0.25],
 // }
 
+const minColumns = 3
+const maxColumns = 24
 
+const minRows = 3
+const maxRows = 24
 
 export default function Settings() {
 
+
+  
+
+  const getRandomObjectEntry = (enumObject) => {
+    const randomFloat = Math.random()
+    const randomIndex = Math.floor(randomFloat * Object.keys(enumObject).length)
+    const randomKey = Object.keys(enumObject)[randomIndex]
+    // const randomItem = enumObject[randomKey]
+    return randomKey
+  }
+
+  const getRandomBoolean = () => {
+    const randomFloat = Math.random()
+    return randomFloat >= 0.5
+  }
+
+  const getRandomInteger = (min, max) => {
+    const randomFloat = Math.random()
+    const randomInteger = Math.round( randomFloat * (max - min) + min )
+    return randomInteger
+  }
+
+  const getRandomInterval = (min, max, interval) => {
+    const randomInteger = getRandomInteger(min, max)
+    const roundedInteger = Math.round(randomInteger / interval) * interval
+    return roundedInteger
+  }
+
+  const randomizeSettings = () => {
+
+    // Canvas
+    setCanvasColor(getRandomObjectEntry(colors))
+
+    // Grid
+    setGridStyle(getRandomObjectEntry(gridStyles))
+    setGridOrientation(getRandomObjectEntry(gridOrientationEnum))
+    setColumnCount(getRandomInterval(minColumns, maxColumns, 3))
+    setRowCount(getRandomInterval(minRows, maxRows, 3))
+
+    setShowGrid(getRandomBoolean())
+    setGridStrokeWidth(getRandomInteger(1, 10))
+    setGridColor(getRandomObjectEntry(colors))
+
+    // Pattern
+    setPatternColor(getRandomObjectEntry(colors))
+    setPatternDensity(getRandomInteger(0, 100))
+    setPatternSeed(getRandomInteger(0, 100))
+    // console.log('randomize')
+    // console.log(getRandomInteger(12, 20))
+    // console.log(getRandomObjectEntry(gridStyles))
+    // console.log(getRandomInterval(minColumns, maxColumns, 3))
+  }
+
+  randomizeSettings()
+
+  const downloadPNG = (canvas) => {
+    setSavePending(true)
+    console.log('download')
+  }
+
   return (
     <div class={styles.settings}>
-      <h1>Settings</h1>
+
+      <div class={styles.sectionTitle}>
+        <svg class={styles.logo} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 352 141">
+          <path fill="currentColor" d="M93.979 46.91V0H.159v46.91h93.82ZM.159 93.82v46.91h93.82V93.82H.159Zm258-46.91h-46.91v46.91h46.91V46.91Zm-117.27 0h-46.91v46.91h46.91V46.91ZM211.249 0h-70.36v46.91h70.36V0Zm0 93.82h-70.36v46.91h70.36V93.82Zm140.73-46.91h-46.91v46.91h46.91V46.91ZM305.069 0h-46.91v46.91h46.91V0Zm0 93.82h-46.91v46.91h46.91V93.82Z"/>
+        </svg>
+        <h1>Graphics Generator</h1>
+      </div>
+
 
       <div class={styles.settingsForm}>
 
@@ -154,9 +229,21 @@ export default function Settings() {
             ))}
           </select>
         </label>
-        
 
-        <p>Grid</p>
+        <label for="transparentCanvas">Transparent Canvas
+          <input 
+            type="checkbox"
+            id="transparentCanvas"
+            checked={transparentCanvas()}
+            onchange={(e) => setTransparentCanvas(e.target.checked)}
+          />
+        </label>
+
+        <button onclick={() => randomizeSettings()} class="button-secondary">Randomize</button>
+
+        <div class={styles.sectionSubtitle}>
+          <p>Grid</p>
+        </div>
 
         <label for="gridStyle">Grid Style:
           <select 
@@ -185,9 +272,10 @@ export default function Settings() {
           <input 
             type="range" 
             id="columnCount"
+            value={columnCount()}
             step={3}
-            min={3}
-            max={24}
+            min={minColumns}
+            max={maxColumns}
             onchange={(e) => setColumnCount(e.target.value)}
           />
         </label>
@@ -196,9 +284,10 @@ export default function Settings() {
           <input 
             type="range" 
             id="rowCount"
+            value={rowCount()}
             step={3}
-            min={3}
-            max={24}
+            min={minRows}
+            max={maxRows}
             onchange={(e) => setRowCount(e.target.value)}
           />
         </label>
@@ -251,8 +340,9 @@ export default function Settings() {
 
         </Show>
 
-        
-        <p>Pattern</p>
+        <div class={styles.sectionSubtitle}>
+          <p>Pattern</p>
+        </div>
 
         <label for="patternColor">Pattern Color:
             <select 
@@ -300,6 +390,9 @@ export default function Settings() {
               onchange={(e) => setPatternSeed(parseInt(e.target.value))}
             />
           </label>
+
+
+          <button onclick={() => downloadPNG()}>Download PNG</button>
 
       </div>
     </div>
