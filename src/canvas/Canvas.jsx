@@ -153,6 +153,14 @@ export default function Canvas() {
     updateSize(width(), height())
   })
 
+  onMount(() => {
+    updateSize(width(), height())
+  })
+
+  // updateSize(width(), height())
+  
+  // updateSize()
+
   createEffect(() => {
 
     if (sketch) {
