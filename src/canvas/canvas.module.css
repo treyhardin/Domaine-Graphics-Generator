@@ -9,3 +9,9 @@
   left: 50%;
   translate: -50% -50%;
 }
+
+@media screen and (max-width: 960px) {
+  .canvasContainer {
+    flex: 0 0 40svh;
+  }
+}

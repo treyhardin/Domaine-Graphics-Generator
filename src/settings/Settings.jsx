@@ -154,7 +154,7 @@ export default function Settings() {
     setRowCount(getRandomInterval(minRows, maxRows, 3))
 
     setShowGrid(getRandomBoolean())
-    setGridStrokeWidth(getRandomInteger(1, 10))
+    setGridStrokeWidth(getRandomInteger(1, 8))
     setGridColor(getRandomObjectEntry(colors))
 
     // Pattern
